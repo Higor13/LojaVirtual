@@ -22,6 +22,31 @@ class CustomDrawer extends StatelessWidget {
       child: Stack(
         children: [
           _buildDrawerBack(),
+          ListView(
+            padding: EdgeInsets.only(left: 32.0, top: 16.0),
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 8.0),
+                padding: EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 8.0),
+                height: 170.0,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 8.0,
+                      left: 8.0,
+                      child: Text(
+                        "Flutter's\nClothing",
+                        style: TextStyle(
+                          fontSize: 34.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
