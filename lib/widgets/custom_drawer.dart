@@ -59,7 +59,7 @@ class CustomDrawer extends StatelessWidget {
                           GestureDetector(
                             onTap: (() {}),
                             child: Text(
-                              'Entre ou cadastr-se >',
+                              'Entre ou cadastre-se >',
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: 16.0,
