@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lojavirtual/tiles/drawer_tiles.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -72,6 +73,11 @@ class CustomDrawer extends StatelessWidget {
                   ],
                 ),
               ),
+              Divider(),
+              DrawerTiles(Icons.home, 'Início'),
+              DrawerTiles(Icons.list, 'Produtos'),
+              DrawerTiles(Icons.location_on, 'Lojas'),
+              DrawerTiles(Icons.playlist_add_check, 'Meus Pedidos'),
             ],
           ),
         ],
