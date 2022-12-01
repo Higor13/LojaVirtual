@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lojavirtual/tiles/drawer_tiles.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
+  // const CustomDrawer({super.key});
+
+  final PageController pageController;
+
+  CustomDrawer(this.pageController);
 
   @override
   Widget build(BuildContext context) {
