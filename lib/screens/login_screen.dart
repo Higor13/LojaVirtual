@@ -28,6 +28,7 @@ class LoginScreen extends StatelessWidget {
           ),
         ],
       ),
+      // Throught this model we can verify model's state
       body: ScopedModelDescendant<UserModel>(builder: ((context, child, model) {
         if (model.isLoading) {
           return const Center(

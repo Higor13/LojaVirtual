@@ -23,8 +23,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Takes all MmaterialApp
     return ScopedModel<UserModel>(
-      model: UserModel(),
+      model: UserModel(), // Specify a model
       child: MaterialApp(
         title: "Flutter's Clothing",
         theme: ThemeData(
