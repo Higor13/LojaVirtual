@@ -6,6 +6,7 @@ class ProductScreen extends StatefulWidget {
   // const ProductScreen({ super.key });
 
   final ProductData product;
+  String? size;
 
   ProductScreen(this.product);
 
@@ -62,6 +63,50 @@ class _ProductScreenState extends State<ProductScreen> {
                     fontSize: 22.0,
                     fontWeight: FontWeight.bold,
                     color: primaryColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+                const Text(
+                  'Tamanho',
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: 34.0,
+                  child: GridView(
+                    scrollDirection: Axis.horizontal, // horizontal scroll
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      mainAxisSpacing: 8.0,
+                      childAspectRatio: 0.5,
+                    ),
+                    children: product.size.map((s) {
+                      return GestureDetector(
+                        onTap: (() {
+                          setState(() {
+                            widget.size = s;
+                          });
+                        }),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(4.0),
+                            ),
+                            border: Border.all(
+                              color:
+                                  s == widget.size ? primaryColor : Colors.grey,
+                              width: 3.0,
+                            ),
+                          ),
+                          width: 50.0,
+                          alignment: Alignment.center,
+                          child: Text(s),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
