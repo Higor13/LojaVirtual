@@ -15,10 +15,15 @@ class ProductsTab extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
+          var devidedTiles = ListTile.divideTiles(
+                  tiles: snapshot.data!.docs.map((doc) {
+                    return CategoryTile(doc);
+                  }).toList(),
+                  color: Colors.grey[500])
+              .toList();
+
           return ListView(
-            children: snapshot.data!.docs.map((doc) {
-              return CategoryTile(doc);
-            }).toList(),
+            children: devidedTiles,
           );
         }
       },
