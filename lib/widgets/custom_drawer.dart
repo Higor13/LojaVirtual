@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lojavirtual/screens/login_screen.dart';
 import 'package:lojavirtual/tiles/drawer_tiles.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -11,7 +12,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget _buildDrawerBack() => Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Color.fromARGB(255, 203, 236, 241),
@@ -28,15 +29,15 @@ class CustomDrawer extends StatelessWidget {
         children: [
           _buildDrawerBack(),
           ListView(
-            padding: EdgeInsets.only(left: 32.0, top: 16.0),
+            padding: const EdgeInsets.only(left: 32.0, top: 16.0),
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 8.0),
-                padding: EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 8.0),
+                margin: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 8.0),
                 height: 170.0,
                 child: Stack(
                   children: [
-                    Positioned(
+                    const Positioned(
                       top: 8.0,
                       left: 8.0,
                       child: Text(
@@ -53,7 +54,7 @@ class CustomDrawer extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Olá,',
                             style: TextStyle(
                               fontSize: 18.0,
@@ -61,7 +62,10 @@ class CustomDrawer extends StatelessWidget {
                             ),
                           ),
                           GestureDetector(
-                            onTap: (() {}),
+                            onTap: (() {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: ((context) => LoginScreen())));
+                            }),
                             child: Text(
                               'Entre ou cadastre-se >',
                               style: TextStyle(
@@ -77,7 +81,7 @@ class CustomDrawer extends StatelessWidget {
                   ],
                 ),
               ),
-              Divider(),
+              const Divider(),
               DrawerTiles(Icons.home, 'Início', pageController, 0),
               DrawerTiles(Icons.list, 'Produtos', pageController, 1),
               DrawerTiles(Icons.location_on, 'Lojas', pageController, 2),
