@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lojavirtual/tiles/category_tile.dart';
 
 class ProductsTab extends StatelessWidget {
   const ProductsTab({super.key});
@@ -15,7 +16,9 @@ class ProductsTab extends StatelessWidget {
           );
         } else {
           return ListView(
-            children: [],
+            children: snapshot.data!.docs.map((doc) {
+              return CategoryTile(doc);
+            }).toList(),
           );
         }
       },
