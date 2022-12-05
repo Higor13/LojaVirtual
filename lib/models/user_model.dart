@@ -6,7 +6,7 @@ import 'package:scoped_model/scoped_model.dart';
 // Model containing Login's state (current user)
 class UserModel extends Model {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  User? firebaseUser;
+  UserCredential? firebaseUser;
   Map<String, dynamic>? userData =
       Map(); // Contains User's data (email, senha...)
 
@@ -25,9 +25,10 @@ class UserModel extends Model {
         .createUserWithEmailAndPassword(
             email: userData['email'], password: pass)
         .then((user) async {
-      // firebaseUser = user as User?;
+      firebaseUser = user;
 
-      await _saveUserData(userData, user);
+      // await _saveUserData(userData, user);
+      await _saveUserData(userData);
 
       onSuccess();
       isLoading = false;
@@ -61,18 +62,18 @@ class UserModel extends Model {
 
   bool isLoggedIn() {
     return firebaseUser != null;
+    // return userData != null;
   }
 
-  Future<Null> _saveUserData(
-      Map<String, dynamic> userData, UserCredential user) async {
+  Future<Null> _saveUserData(Map<String, dynamic> userData) async {
     this.userData = userData;
-    // await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(firebaseUser?.uid)
-    //     .set(userData);
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(user.user?.uid)
+        .doc(firebaseUser?.user?.uid)
         .set(userData);
+    // await FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(user.user?.uid)
+    //     .set(userData);
   }
 }
