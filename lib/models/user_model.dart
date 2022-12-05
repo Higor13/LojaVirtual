@@ -7,10 +7,18 @@ import 'package:scoped_model/scoped_model.dart';
 class UserModel extends Model {
   FirebaseAuth _auth = FirebaseAuth.instance;
   UserCredential? firebaseUser;
+  User? testUser;
   Map<String, dynamic>? userData =
       Map(); // Contains User's data (email, senha...)
 
   bool isLoading = false;
+
+  @override
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+
+    _loadCurrentUser();
+  }
 
   //Functions that modify the state
   void signUp(
@@ -26,6 +34,7 @@ class UserModel extends Model {
             email: userData['email'], password: pass)
         .then((user) async {
       firebaseUser = user;
+      testUser = firebaseUser?.user;
 
       // await _saveUserData(userData, user);
       await _saveUserData(userData);
@@ -48,8 +57,13 @@ class UserModel extends Model {
     isLoading = true;
     notifyListeners();
 
-    _auth.signInWithEmailAndPassword(email: email, password: pass).then((user) {
+    _auth
+        .signInWithEmailAndPassword(email: email, password: pass)
+        .then((user) async {
       firebaseUser = user;
+      testUser = firebaseUser?.user;
+
+      await _loadCurrentUser();
 
       onSuccess();
       isLoading = false;
@@ -65,6 +79,7 @@ class UserModel extends Model {
     await _auth.signOut();
 
     userData = Map();
+    testUser = null;
     firebaseUser = null;
     notifyListeners();
   }
@@ -86,5 +101,21 @@ class UserModel extends Model {
     //     .collection('users')
     //     .doc(user.user?.uid)
     //     .set(userData);
+  }
+
+  Future<Null> _loadCurrentUser() async {
+    if (testUser == null) {
+      testUser = await _auth.currentUser;
+    }
+    if (testUser != null) {
+      if (userData!['name'] == null) {
+        DocumentSnapshot docUser = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(testUser?.uid)
+            .get();
+        userData = docUser.data() as Map<String, dynamic>;
+      }
+    }
+    notifyListeners();
   }
 }
