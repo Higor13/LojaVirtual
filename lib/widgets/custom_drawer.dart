@@ -72,7 +72,9 @@ class CustomDrawer extends StatelessWidget {
                                         MaterialPageRoute(
                                             builder: ((context) =>
                                                 LoginScreen())));
-                                  } else {}
+                                  } else {
+                                    model.signOut();
+                                  }
                                 }),
                                 child: Text(
                                   !model.isLoggedIn()
