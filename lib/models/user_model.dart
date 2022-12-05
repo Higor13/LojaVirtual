@@ -25,9 +25,9 @@ class UserModel extends Model {
         .createUserWithEmailAndPassword(
             email: userData['email'], password: pass)
         .then((user) async {
-      firebaseUser = user as User?;
+      // firebaseUser = user as User?;
 
-      await _saveUserData(userData);
+      await _saveUserData(userData, user);
 
       onSuccess();
       isLoading = false;
@@ -55,11 +55,16 @@ class UserModel extends Model {
     return false;
   }
 
-  Future<Null> _saveUserData(Map<String, dynamic> userData) async {
+  Future<Null> _saveUserData(
+      Map<String, dynamic> userData, UserCredential user) async {
     this.userData = userData;
+    // await FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(firebaseUser?.uid)
+    //     .set(userData);
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(firebaseUser?.uid)
+        .doc(user.user?.uid)
         .set(userData);
   }
 }
