@@ -49,10 +49,18 @@ class UserModel extends Model {
     notifyListeners(); // Everything inside the ScopedModelDescendant will be recreated
   }
 
+  void signOut() async {
+    await _auth.signOut();
+
+    userData = Map();
+    firebaseUser = null;
+    notifyListeners();
+  }
+
   void recoverPass() {}
 
   bool isLoggedIn() {
-    return false;
+    return firebaseUser != null;
   }
 
   Future<Null> _saveUserData(
