@@ -36,18 +36,29 @@ class UserModel extends Model {
     }).catchError((onError) {
       onFail();
       isLoading = false;
-      notifyListeners();
+      notifyListeners(); // Everything inside the ScopedModelDescendant will be recreated
     });
   }
 
-  Future<void> signIn() async {
+  Future<void> signIn(
+      {required String email,
+      required String pass,
+      required VoidCallback onSuccess,
+      required VoidCallback onFail}) async {
     isLoading = true;
     notifyListeners();
 
-    await Future.delayed(Duration(seconds: 3));
+    _auth.signInWithEmailAndPassword(email: email, password: pass).then((user) {
+      firebaseUser = user;
 
-    isLoading = false;
-    notifyListeners(); // Everything inside the ScopedModelDescendant will be recreated
+      onSuccess();
+      isLoading = false;
+      notifyListeners();
+    }).catchError((onError) {
+      onFail();
+      isLoading = false;
+      notifyListeners();
+    });
   }
 
   void signOut() async {

@@ -3,8 +3,18 @@ import 'package:lojavirtual/models/user_model.dart';
 import 'package:lojavirtual/screens/signup_screen.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+import 'package:flutter/material.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -42,6 +52,7 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             children: [
               TextFormField(
+                controller: _emailController,
                 decoration: const InputDecoration(
                   hintText: 'Email',
                 ),
@@ -53,6 +64,7 @@ class LoginScreen extends StatelessWidget {
                 }),
               ),
               TextFormField(
+                controller: _passController,
                 decoration: const InputDecoration(
                   hintText: 'Senha',
                 ),
@@ -82,7 +94,12 @@ class LoginScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: (() {
                     if (_formKey.currentState!.validate()) {}
-                    model.signIn();
+                    model.signIn(
+                      email: _emailController.text,
+                      pass: _passController.text,
+                      onSuccess: onSuccess,
+                      onFail: onFail,
+                    );
                   }),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
@@ -97,6 +114,20 @@ class LoginScreen extends StatelessWidget {
           ),
         );
       })),
+    );
+  }
+
+  void onSuccess() {
+    Navigator.of(context).pop();
+  }
+
+  void onFail() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Falha ao entrar!"),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      ),
     );
   }
 }
