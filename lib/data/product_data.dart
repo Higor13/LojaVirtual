@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 
 class ProductData {
   late String category;
@@ -16,5 +17,13 @@ class ProductData {
     price = snapshot['price'];
     images = snapshot['images'];
     size = snapshot['size'];
+  }
+
+  Map<String, dynamic> toResumeMap() {
+    return {
+      'title': title,
+      'description': description,
+      'price': price,
+    };
   }
 }
