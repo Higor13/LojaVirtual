@@ -26,17 +26,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Takes all MmaterialApp
     return ScopedModel<UserModel>(
-        model: UserModel(), // Specify a model
-        child: ScopedModel<CartModel>(
-          model: CartModel(),
-          child: MaterialApp(
-            title: "Flutter's Clothing",
-            theme: ThemeData(
-                primarySwatch: Colors.blue,
-                primaryColor: const Color.fromARGB(255, 4, 125, 141)),
-            debugShowCheckedModeBanner: false,
-            home: HomeScreen(),
-          ),
-        ));
+      model: UserModel(), // Specify a model
+      child: ScopedModelDescendant<UserModel>(
+        builder: ((context, child, model) {
+          return ScopedModel<CartModel>(
+            model: CartModel(model), // Cart model receiving current user
+            child: MaterialApp(
+              title: "Flutter's Clothing",
+              theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                  primaryColor: const Color.fromARGB(255, 4, 125, 141)),
+              debugShowCheckedModeBanner: false,
+              home: HomeScreen(),
+            ),
+          );
+        }),
+      ),
+    );
   }
 }
