@@ -8,6 +8,8 @@ class CartModel extends Model {
   UserModel user;
   List<CartProduct> products = [];
 
+  bool isLoading = false;
+
   CartModel(this.user);
 
   // To easily access UserModel data from anywhere
