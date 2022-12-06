@@ -12,7 +12,78 @@ class CartTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget _buildContent() {
-      return Container();
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            width: 120.0,
+            child: Image.network(
+              cartProduct.productData?.images[0],
+              fit: BoxFit.cover,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // Espaçar igualmente na vertial
+                children: [
+                  Text(
+                    cartProduct.productData!.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17.0,
+                    ),
+                  ),
+                  Text(
+                    'Tamanho: ${cartProduct.size}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  Text(
+                    'R\$ ${cartProduct.productData?.price.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        onPressed: cartProduct.quantity! > 1 ? (() {}) : null,
+                        icon: const Icon(Icons.remove),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      Text(cartProduct.quantity.toString()),
+                      IconButton(
+                        onPressed: (() {}),
+                        icon: const Icon(Icons.add),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      TextButton(
+                        onPressed: (() {}),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.white)),
+                        child: const Text(
+                          'Remover',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
     }
 
     return Card(
