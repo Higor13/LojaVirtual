@@ -13,6 +13,10 @@ class UserModel extends Model {
 
   bool isLoading = false;
 
+  // To easily access UserModel data from anywhere
+  static UserModel of(BuildContext context) =>
+      ScopedModel.of<UserModel>(context);
+
   @override
   void addListener(VoidCallback listener) {
     super.addListener(listener);
