@@ -10,7 +10,13 @@ class CartModel extends Model {
 
   bool isLoading = false;
 
-  CartModel(this.user);
+  // CartModel(this.user);
+
+  CartModel(this.user) {
+    if (user.isLoggedIn()) {
+      _loadCartItems();
+    }
+  }
 
   // To easily access UserModel data from anywhere
   static CartModel of(BuildContext context) =>
@@ -66,6 +72,18 @@ class CartModel extends Model {
         .collection('cart')
         .doc(cartProduct.cid)
         .update(cartProduct.toMap());
+
+    notifyListeners();
+  }
+
+  Future<void> _loadCartItems() async {
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.firebaseUser!.user!.uid)
+        .collection('cart')
+        .get();
+
+    products = query.docs.map((doc) => CartProduct.fromDocument(doc)).toList();
 
     notifyListeners();
   }
