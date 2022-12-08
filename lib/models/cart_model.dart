@@ -84,6 +84,80 @@ class CartModel extends Model {
     this.discountPercentage = discountPercentage;
   }
 
+  void updatePrices() {
+    notifyListeners();
+  }
+
+  double getProductsPrice() {
+    double price = 0.0;
+
+    for (CartProduct c in products) {
+      if (c.productData != null) {
+        price += c.quantity! * c.productData!.price;
+      }
+    }
+    return price;
+  }
+
+  double getDiscount() {
+    return getProductsPrice() * discountPercentage / 100;
+  }
+
+  double getShipPrice() {
+    return 9.99;
+  }
+
+  Future<String?> finishOrder() async {
+    if (products.length == 0) return null;
+
+    isLoading = true;
+    notifyListeners();
+
+    double procuctsPrice = getProductsPrice();
+    double shipPrice = getShipPrice();
+    double discount = getDiscount();
+
+    DocumentReference refOrder =
+        await FirebaseFirestore.instance.collection('orders').add({
+      'clientId': user.firebaseUser!.user!.uid,
+      'products': products.map((cartProduct) => cartProduct.toMap()).toList(),
+      'shiPrice': shipPrice,
+      'productsPrice': procuctsPrice,
+      'discount': discount,
+      'totalPrice': procuctsPrice - discount + shipPrice,
+      'status': 1,
+    });
+
+    // Saving order Id to user
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.firebaseUser!.user!.uid)
+        .collection('orders')
+        .doc(refOrder.id)
+        .set({
+      'orderId': refOrder.id,
+    });
+
+    // To delete all products from cart
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.firebaseUser!.user!.uid)
+        .collection('cart')
+        .get();
+
+    for (DocumentSnapshot doc in query.docs) {
+      doc.reference.delete();
+    }
+
+    products.clear();
+    discountPercentage = 0;
+    couponCode = null;
+    isLoading = false;
+    notifyListeners();
+
+    return refOrder.id;
+  }
+
   Future<void> _loadCartItems() async {
     QuerySnapshot query = await FirebaseFirestore.instance
         .collection('users')
