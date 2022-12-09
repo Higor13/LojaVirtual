@@ -21,6 +21,7 @@ class OrderTile extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else {
+              int status = snapshot.data!['status'];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -34,6 +35,32 @@ class OrderTile extends StatelessWidget {
                     height: 4.0,
                   ),
                   Text(_buildProductsText(snapshot.data!)),
+                  const SizedBox(height: 4.0),
+                  Text(
+                    'Status do pedido: ${snapshot.data!.id}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildCircle('1', 'Preparação', status, 1),
+                      Container(
+                        height: 1.0,
+                        width: 40.0,
+                        color: Colors.grey[500],
+                      ),
+                      _buildCircle('2', 'Transporte', status, 2),
+                      Container(
+                        height: 1.0,
+                        width: 40.0,
+                        color: Colors.grey[500],
+                      ),
+                      _buildCircle('3', 'Entrega', status, 3),
+                    ],
+                  ),
                 ],
               );
             }
@@ -58,5 +85,50 @@ class OrderTile extends StatelessWidget {
     text += 'Total: R\$ ${snapshot['totalPrice'].toStringAsFixed(2)}';
 
     return text;
+  }
+
+  Widget _buildCircle(
+      String title, String subtitle, int status, int thisStatus) {
+    Color backColor;
+    Widget child;
+
+    if (status < thisStatus) {
+      backColor = Colors.grey;
+      child = Text(
+        title,
+        style: const TextStyle(color: Colors.white),
+      );
+    } else if (status == thisStatus) {
+      backColor = Colors.blue;
+      child = Stack(
+        alignment: Alignment.center,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(color: Colors.white),
+          ),
+          const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        ],
+      );
+    } else {
+      backColor = Colors.green;
+      child = const Icon(
+        Icons.check,
+        color: Colors.white,
+      );
+    }
+
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 20.0,
+          backgroundColor: backColor,
+          child: child,
+        ),
+        Text(subtitle),
+      ],
+    );
   }
 }
