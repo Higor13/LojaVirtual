@@ -3,6 +3,7 @@ import 'package:lojavirtual/tabs/home_tab.dart';
 import 'package:lojavirtual/widgets/cart_button.dart';
 
 import '../tabs/orders_tab.dart';
+import '../tabs/places_tab.dart';
 import '../tabs/products_tab.dart';
 import '../widgets/custom_drawer.dart';
 
@@ -30,6 +31,14 @@ class HomeScreen extends StatelessWidget {
           drawer: CustomDrawer(_pageController),
           body: ProductsTab(),
           floatingActionButton: CartButton(),
+        ),
+        Scaffold(
+          appBar: AppBar(
+            title: Text('Lojas'),
+            centerTitle: true,
+          ),
+          body: PlacesTab(),
+          drawer: CustomDrawer(_pageController),
         ),
         Scaffold(
           appBar: AppBar(
