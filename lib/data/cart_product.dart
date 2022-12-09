@@ -30,8 +30,8 @@ class CartProduct {
       'pid': pid,
       'quantity': quantity,
       'size': size,
-      // 'product': productData
-      //     ?.toResumeMap(), // para mostrar apenas alguns dados do produto
+      'product': productData
+          ?.toResumeMap(), // para mostrar apenas alguns dados do produto
     };
   }
 }
